@@ -43,6 +43,8 @@ coin_speed = 2
 coins_lost = 0
 collisions = 0
 score = 0
+
+# Set clock and FPS
 FPS = 60
 clock = pygame.time.Clock()
 
@@ -56,6 +58,7 @@ while running == True:
     # Make a list of keys
     keys = pygame.key.get_pressed()
 
+    # Smooth movement
     if keys[pygame.K_UP] and dragon_rect.top > 0:
         dragon_rect.centery -= VELOCITY
     if keys[pygame.K_DOWN] and dragon_rect.bottom < SCREEN_HEIGHT:
@@ -77,17 +80,22 @@ while running == True:
     # Collisions
     if pygame.Rect.colliderect(dragon_rect, coin_rect):
         coin_sound.play()
-        coin_rect.x = random.randint(SCREEN_WIDTH + 64, SCREEN_WIDTH + 64)
+        coin_rect.x = random.randint(SCREEN_WIDTH + 64, SCREEN_WIDTH + 64) # Plus 64 to create the coins out of screen
         coin_rect.y = random.randint(0, SCREEN_HEIGHT - 32)
         score += 1
         collisions += 1
+
+        # Condition to increase coin's speed
         if collisions%5 == 0:
             coin_speed += 1
 
+    # Condition to lose
     if coin_rect.x < 0:
         coin_rect.x = random.randint(SCREEN_WIDTH + 64, SCREEN_WIDTH + 64)
         coin_rect.y = random.randint(0, SCREEN_HEIGHT - 32)
         coins_lost += 1
+
+        # Losing condition
         if coins_lost == 5:
             running = False
 
